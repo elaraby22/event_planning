@@ -1,12 +1,11 @@
-import 'package:event_planning/providers/app_language_provider.dart';
-import 'package:event_planning/providers/app_theme_provider.dart';
-import 'package:event_planning/ui/home_screen/language_bottom_sheet.dart';
-import 'package:event_planning/ui/home_screen/theme_bottom_sheet.dart';
+import 'package:event_planning/tabs/favorite/favorite_tab.dart';
+import 'package:event_planning/tabs/home/home_tab.dart';
+import 'package:event_planning/tabs/map/map_tab.dart';
+import 'package:event_planning/tabs/profile/profile_tab.dart';
 import 'package:event_planning/utils/app_colors.dart';
-import 'package:event_planning/utils/app_styles.dart';
+import 'package:event_planning/utils/assets_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = 'home_screen';
@@ -16,104 +15,71 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int selectedIndex = 0;
+  List<Widget> tabs = [HomeTab(), MapTab(), FavoriteTab(), ProfileTab()];
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
-    var languageProvider = Provider.of<AppLanguageProvider>(context);
-    var themeProvider = Provider.of<AppThemeProvider>(context);
     return Scaffold(
-      appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              AppLocalizations.of(context)!.language,
-              style: AppStyles.bold20Black,
-            ),
-            SizedBox(
-              height: height * 0.02,
-            ),
-            InkWell(
-              onTap: () {
-                showLanguageBottomSheet();
+      bottomNavigationBar: Theme(
+        data:
+            Theme.of(context).copyWith(canvasColor: AppColors.transparentColor),
+        child: BottomAppBar(
+          color: Theme.of(context).primaryColor,
+          shape: CircularNotchedRectangle(),
+          child: BottomNavigationBar(
+              currentIndex: selectedIndex,
+              onTap: (index) {
+                selectedIndex = index;
+                setState(() {});
               },
-              child: Container(
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    border:
-                        Border.all(color: AppColors.primaryLight, width: 2)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      languageProvider.appLanguage == 'en'
-                          ? AppLocalizations.of(context)!.english
-                          : AppLocalizations.of(context)!.arabic,
-                      style: AppStyles.bold20Primary,
-                    ),
-                    Icon(
-                      Icons.arrow_drop_down,
-                      size: 35,
-                      color: AppColors.primaryLight,
-                    )
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(
-              height: height * 0.02,
-            ),
-            Text(
-              AppLocalizations.of(context)!.theme,
-              style: AppStyles.bold20Black,
-            ),
-            SizedBox(
-              height: height * 0.02,
-            ),
-            InkWell(
-              onTap: () {
-                showThemeBottomSheet();
-              },
-              child: Container(
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    border:
-                        Border.all(color: AppColors.primaryLight, width: 2)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      themeProvider.isDarkMode()
-                          ? AppLocalizations.of(context)!.dark
-                          : AppLocalizations.of(context)!.light,
-                      style: AppStyles.bold20Primary,
-                    ),
-                    Icon(
-                      Icons.arrow_drop_down,
-                      size: 35,
-                      color: AppColors.primaryLight,
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ],
+              items: [
+                buildBottomNavItems(
+                    index: 0,
+                    iconSelectedName: AssetsManager.iconSelectedHome,
+                    iconName: AssetsManager.iconHome,
+                    label: AppLocalizations.of(context)!.home),
+                buildBottomNavItems(
+                    index: 1,
+                    iconSelectedName: AssetsManager.iconSelectedMap,
+                    iconName: AssetsManager.iconMap,
+                    label: AppLocalizations.of(context)!.map),
+                buildBottomNavItems(
+                    index: 2,
+                    iconSelectedName: AssetsManager.iconSelectedFavorite,
+                    iconName: AssetsManager.iconFavorite,
+                    label: AppLocalizations.of(context)!.favorite),
+                buildBottomNavItems(
+                    index: 3,
+                    iconSelectedName: AssetsManager.iconSelectedProfile,
+                    iconName: AssetsManager.iconProfile,
+                    label: AppLocalizations.of(context)!.profile),
+              ]),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // add event
+          // navigate to add event screen
+        },
+        child: Icon(
+          Icons.add,
+          color: AppColors.whiteColor,
+          size: 35,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      body: tabs[selectedIndex],
     );
   }
 
-  void showLanguageBottomSheet() {
-    showModalBottomSheet(
-        context: context, builder: (context) => LanguageBottomSheet());
-  }
-
-  void showThemeBottomSheet() {
-    showModalBottomSheet(
-        context: context, builder: (context) => ThemeBottomSheet());
+  BottomNavigationBarItem buildBottomNavItems(
+      {required int index,
+      required String iconName,
+      required String label,
+      required String iconSelectedName}) {
+    return BottomNavigationBarItem(
+        icon: ImageIcon(
+            AssetImage(selectedIndex == index ? iconSelectedName : iconName)),
+        label: label);
   }
 }
