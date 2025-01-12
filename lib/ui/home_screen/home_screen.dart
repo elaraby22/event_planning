@@ -1,7 +1,8 @@
-import 'package:event_planning/tabs/favorite/favorite_tab.dart';
-import 'package:event_planning/tabs/home/home_tab.dart';
-import 'package:event_planning/tabs/map/map_tab.dart';
-import 'package:event_planning/tabs/profile/profile_tab.dart';
+import 'package:event_planning/ui/home_screen/tabs/favorite/favorite_tab.dart';
+import 'package:event_planning/ui/home_screen/tabs/home/add_Event/add_event.dart';
+import 'package:event_planning/ui/home_screen/tabs/home/home_tab.dart';
+import 'package:event_planning/ui/home_screen/tabs/map/map_tab.dart';
+import 'package:event_planning/ui/home_screen/tabs/profile/profile_tab.dart';
 import 'package:event_planning/utils/app_colors.dart';
 import 'package:event_planning/utils/assets_manager.dart';
 import 'package:flutter/material.dart';
@@ -60,6 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: () {
           // add event
           // navigate to add event screen
+          Navigator.of(context).pushNamed(AddEvent.routeName);
         },
         child: Icon(
           Icons.add,
