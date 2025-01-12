@@ -1,0 +1,25 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "event-planning-be56b",
+          "appId": "1:414811708560:android:8428c79e0a27e4ef4b0c15",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "event-planning-be56b",
+          "configurations": {
+            "android": "1:414811708560:android:8428c79e0a27e4ef4b0c15",
+            "ios": "1:414811708560:ios:3d42deabdf09315d4b0c15",
+            "macos": "1:414811708560:ios:3d42deabdf09315d4b0c15",
+            "web": "1:414811708560:web:ad55f51a32c7e73c4b0c15",
+            "windows": "1:414811708560:web:f11ba6e08fd4910f4b0c15"
+          }
+        }
+      }
+    }
+  }
+}
